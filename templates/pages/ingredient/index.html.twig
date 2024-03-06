@@ -5,10 +5,10 @@
 
 {% block body %}
         <div class="container mt-4">
-            
+            {% if not ingredients.items is same as ([]) %}
             <h1>Mes ingrédients </h1>
 
-            {#Ici on compte le nombre d'item et on l'affiche#}
+            {#Ici on compte le nombre d'item et on l'affiche, et on gère un array vide avec un if not#}
             <h5 class="mt-4"> Il y a {{ ingredients.getTotalItemCount }} ingrédients !</h5>
 
             <table class="table table-hover mt-4">
@@ -36,6 +36,10 @@
             <div class="navigation d-flex justify-content-center mt-4">
                 {{ knp_pagination_render(ingredients) }}
             </div>
+                {# Else plus Fin du if #}
+            {% else %}
+            <h4> Il n'y a pas d'ingrédients</h4>
+            {% endif %}
         </div>
     
 {% endblock %}

@@ -26,7 +26,7 @@ class Ingredient
     #[Assert\Range(
         minMessage: "Le prix ne peut pas être infèrieur a 0",
         maxMessage: "Le prix ne peut pas être supèrieur à 200",
-        min: 0.01,
+
         max: 200)]
     #[Assert\NotNull]
     #[Assert\NotBlank]
