@@ -8,7 +8,10 @@
             
             <h1>Mes ingrédients </h1>
 
-            <table class="table table-hover">
+            {#Ici on compte le nombre d'item et on l'affiche#}
+            <h5 class="mt-4"> Il y a {{ ingredients.getTotalItemCount }} ingrédients !</h5>
+
+            <table class="table table-hover mt-4">
                 <thead>
                 <tr>
                     <th scope="col">Numéro</th>
@@ -18,8 +21,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for ingredients in ingredients %}
-                    <tr class="table-primary">
+                {% for ingredients in ingredients %} {# boucle for pour afficher les ingredients dans le table #}
+                    <tr class="table-primary mt-4">
                         <th scope="row">{{ ingredients.id }}</th>
                         <td>{{ ingredients.name }}</td>
                         <td>{{ ingredients.price }}</td>
@@ -27,10 +30,12 @@
                     </tr>
                 {% endfor %}
 
-
                 </tbody>
             </table>
-
+            {# Ici on appel la méthode de pagination  #}
+            <div class="navigation d-flex justify-content-center mt-4">
+                {{ knp_pagination_render(ingredients) }}
+            </div>
         </div>
     
 {% endblock %}
