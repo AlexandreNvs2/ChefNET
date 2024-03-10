@@ -7,11 +7,18 @@ use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
-
+/**
+ * @Route("/chemin", name="nom_route")
+ * @Method({"GET", "POST"})
+ * @Controller(service="App\Controller\IngredientController")
+ */
 class IngredientController extends AbstractController
 {
 
@@ -23,7 +30,7 @@ class IngredientController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/ingredient', name: 'app_ingredient' , methods: ['GET'])]
+    #[Route('/ingredient', name: 'ingredient.index' , methods: ['GET'])]
     public function index(IngredientRepository $repository,PaginatorInterface $paginator, Request $request
         /* Injection de dépendance(Ici Paginator et Repository)*/): Response
 
@@ -41,12 +48,36 @@ class IngredientController extends AbstractController
 
     }
     #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'] )]
-    public function new() : Response
+    public function new(
+        Request $request,
+        EntityManagerInterface $manager #Entity manager qui va nous permettre de push notre ingrédient en base de données  #
+    ): Response
     {
         #  Création avec la classe ingrédient   #
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
 
+        # Si le formulaire est remplie est valide #
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $ingredient = $form->getData();
+            #Envoie en base (commit)
+            $manager->persist($ingredient);
+            #Enregistrement en base de données(push)
+            $manager->flush();
+            
+            $this->addFlash(
+                'succes',
+                'Votre ingrédient à été ajouté avec succès !'
+            );
+
+
+
+            #$this->redirectToRoute('ingredient.index');
+        }
+            
+
+        
         # Rendu du formulaire #
         return  $this->render('pages/ingredient/new.html.twig',
             [

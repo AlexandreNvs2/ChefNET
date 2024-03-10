@@ -1,9 +1,40 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+
+    <div class="container">
+        {# Flash message pour l'ajout avec succès #}
+        {% for message in app.flashes ('succes') %}
+        <div class="alert-succes">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+
     <div class="container">
         <h1 class="mt-4"> Créaction d'un ingrédient </h1>
     </div>
 
-{{ form(form) }}
+    {{ form_start(form) }}
+
+    <div class=" form-groupe">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        <div class="form-error">
+            {{ form_errors(form.name) }}
+        </div>
+    </div>
+    <div class=" form-groupe">
+        {{ form_label(form.price) }}
+        {{ form_widget(form.price) }}
+        <div class="form-error">
+            {{ form_errors(form.price) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_row(form.submit) }}
+    </div>
+
+    </div>
+    {{ form_end(form) }}
 {% endblock %}
