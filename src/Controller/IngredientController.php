@@ -109,9 +109,10 @@ class IngredientController extends AbstractController
                 $manager->flush();
 
                 $this->addFlash(
-                    'success',
+                    'modif',
                     'Votre ingrédient à été modifié avec succès !'
                 );
+                return $this->redirectToRoute('ingredient.index');
             }
 
 

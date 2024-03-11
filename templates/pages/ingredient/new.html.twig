@@ -6,8 +6,8 @@
         <h1 class="mt-4"> Créaction d'un ingrédient </h1>
     </div>
     {# Flash message pour l'ajout avec succès #}
-    {% for message in app.flashes ('succes') %}
-        <div class=" alert alert-succes">
+    {% for message in app.flashes ('success') %}
+        <div class=" alert alert-success">
             {{ message }}
         </div>
     {% endfor %}
@@ -15,14 +15,14 @@
 
     {{ form_start(form) }}
 
-    <div class=" form-groupe">
+    <div class=" form-group">
         {{ form_label(form.name) }}
         {{ form_widget(form.name) }}
         <div class="form-error">
             {{ form_errors(form.name) }}
         </div>
     </div>
-    <div class=" form-groupe">
+    <div class=" form-group">
         {{ form_label(form.price) }}
         {{ form_widget(form.price) }}
         <div class="form-error">

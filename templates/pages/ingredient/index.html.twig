@@ -9,13 +9,20 @@
             <h1>Mes ingrédients </h1>
 
 
-                <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
+                <a href="{{ path('ingredient.new') }}" class="btn btn-primary mt-4">
                     Créer un ingrédient
                 </a>
 
                 {# Flash message pour l'ajout avec succès #}
-                <div class="container">
+                <div class="container mt-4">
                     {% for message in app.flashes ('succes') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="container mt-4">
+                    {% for message in app.flashes ('modif') %}
                         <div class="alert alert-success">
                             {{ message }}
                         </div>
