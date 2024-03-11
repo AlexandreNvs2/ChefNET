@@ -24,7 +24,7 @@ class IngredientController extends AbstractController
 
 
     /**
-     * cette fonction affiche tout les ingrédients
+     * Cette fonction affiche tout les ingrédients
      * @param IngredientRepository $repository
      * @param PaginatorInterface $paginator
      * @param Request $request
@@ -47,6 +47,13 @@ class IngredientController extends AbstractController
         ]);
 
     }
+
+    /**
+     * Ce controller montre un formulaire qui nous permet de créer un ingrédient
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'] )]
     public function new(
         Request $request,
@@ -65,7 +72,7 @@ class IngredientController extends AbstractController
             $manager->persist($ingredient);
             #Enregistrement en base de données(push)
             $manager->flush();
-            
+
             $this->addFlash(
                 'succes',
                 'Votre ingrédient à été ajouté avec succès !'
@@ -73,16 +80,46 @@ class IngredientController extends AbstractController
 
 
 
-            #$this->redirectToRoute('ingredient.index');
+            return $this->redirectToRoute('ingredient.index');
         }
-            
 
-        
+
+
         # Rendu du formulaire #
         return  $this->render('pages/ingredient/new.html.twig',
             [
             'form' => $form->createView()
-        ]
-        );
+        ]);
     }
+
+    /**
+     * @return Response
+     */
+#[Route('/ingredient/edition/{id}','ingredient.edit', methods: ['GET', 'POST'])]
+    public function edit(Ingredient $ingredient , Request $request, EntityManagerInterface $manager) : Response
+        {
+
+            $form = $this->createForm(IngredientType::class, $ingredient);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()){
+                $ingredient = $form->getData();
+                #Envoie en base (commit)
+                $manager->persist($ingredient);
+                #Enregistrement en base de données(push)
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Votre ingrédient à été modifié avec succès !'
+                );
+            }
+
+
+            return $this->render('pages/ingredient/edit.html.twig', [
+                'form'=>$form->createView()
+            ]);
+        }
+
+
+
 }

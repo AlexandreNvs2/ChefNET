@@ -8,6 +8,20 @@
             {% if not ingredients.items is same as ([]) %}
             <h1>Mes ingrédients </h1>
 
+
+                <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
+                    Créer un ingrédient
+                </a>
+
+                {# Flash message pour l'ajout avec succès #}
+                <div class="container">
+                    {% for message in app.flashes ('succes') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+
             {#Ici on compte le nombre d'item et on l'affiche, et on gère un array vide avec un if not#}
             <h5 class="mt-4"> Il y a {{ ingredients.getTotalItemCount }} ingrédients !</h5>
 
