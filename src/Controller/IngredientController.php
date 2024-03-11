@@ -79,7 +79,7 @@ class IngredientController extends AbstractController
             );
 
 
-
+            #On envoie le flashMessage dans le ingredient.index
             return $this->redirectToRoute('ingredient.index');
         }
 
@@ -93,6 +93,10 @@ class IngredientController extends AbstractController
     }
 
     /**
+     * Modification d'un ingrédient
+     * @param Ingredient $ingredient
+     * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
 #[Route('/ingredient/edition/{id}','ingredient.edit', methods: ['GET', 'POST'])]
@@ -103,15 +107,16 @@ class IngredientController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()){
                 $ingredient = $form->getData();
-                #Envoie en base (commit)
+                #Envoie en BDD (commit)
                 $manager->persist($ingredient);
-                #Enregistrement en base de données(push)
+                #Enregistrement en BDD(push)
                 $manager->flush();
 
                 $this->addFlash(
                     'modif',
                     'Votre ingrédient à été modifié avec succès !'
                 );
+                #On envoie le flashMessage dans le ingredient.index
                 return $this->redirectToRoute('ingredient.index');
             }
 
@@ -119,6 +124,26 @@ class IngredientController extends AbstractController
             return $this->render('pages/ingredient/edit.html.twig', [
                 'form'=>$form->createView()
             ]);
+        }
+
+    /**
+     * Suppression d'un ingrédient
+     * @param EntityManagerInterface $manager
+     * @param Ingredient $ingredient
+     * @return Response
+     */
+        #[Route('/ingredient/delete/{id}', 'ingredient.delete', methods: ['GET'])]
+        public function delete(EntityManagerInterface $manager, Ingredient $ingredient) : Response
+        {
+            $manager->remove($ingredient);
+            $manager->flush();
+
+            $this->addFlash(
+                'modif',
+                'Votre ingrédient à été supprimé avec succès !'
+            );
+
+            return $this->redirectToRoute('ingredient.index');
         }
 
 
