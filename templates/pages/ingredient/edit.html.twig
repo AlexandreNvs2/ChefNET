@@ -2,9 +2,9 @@
 
 {% block body %}
 
-    <div class="container">
+    <div class="container mt-4">
         <h1 class="mt-4"> Modificaton de l'ingrédient </h1>
-    </div>
+
     {# Flash message pour l'ajout avec succès #}
     {% for message in app.flashes ('modif') %}
         <div class=" alert alert-success">
@@ -15,14 +15,14 @@
 
     {{ form_start(form) }}
 
-    <div class=" form-groupe">
+    <div class=" form-group">
         {{ form_label(form.name) }}
         {{ form_widget(form.name) }}
         <div class="form-error">
             {{ form_errors(form.name) }}
         </div>
     </div>
-    <div class=" form-groupe">
+    <div class=" form-group">
         {{ form_label(form.price) }}
         {{ form_widget(form.price) }}
         <div class="form-error">
@@ -33,6 +33,7 @@
         {{ form_row(form.submit) }}
     </div>
 
-    </div>
+
+
     {{ form_end(form) }}
 {% endblock %}

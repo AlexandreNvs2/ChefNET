@@ -31,7 +31,9 @@ class IngredientController extends AbstractController
      * @return Response
      */
     #[Route('/ingredient', name: 'ingredient.index' , methods: ['GET'])]
-    public function index(IngredientRepository $repository,PaginatorInterface $paginator, Request $request
+    public function index(IngredientRepository $repository
+        , PaginatorInterface $paginator
+        , Request $request
         /* Injection de dépendance(Ici Paginator et Repository)*/): Response
 
     {
@@ -50,6 +52,7 @@ class IngredientController extends AbstractController
 
     /**
      * Ce controller montre un formulaire qui nous permet de créer un ingrédient
+     * et de l'envoyer en BDD
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
@@ -60,11 +63,11 @@ class IngredientController extends AbstractController
         EntityManagerInterface $manager #Entity manager qui va nous permettre de push notre ingrédient en base de données  #
     ): Response
     {
-        #  Création avec la classe ingrédient   #
+        #  Création avec la classe ingrédient
         $ingredient = new Ingredient();
         $form = $this->createForm(IngredientType::class, $ingredient);
 
-        # Si le formulaire est remplie est valide #
+        # Si le formulaire est remplie est valide
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $ingredient = $form->getData();
@@ -93,7 +96,7 @@ class IngredientController extends AbstractController
     }
 
     /**
-     * Modification d'un ingrédient
+     * Modification d'un ingrédient et envoie en BDD
      * @param Ingredient $ingredient
      * @param Request $request
      * @param EntityManagerInterface $manager
