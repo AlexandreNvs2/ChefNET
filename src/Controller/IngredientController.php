@@ -77,7 +77,7 @@ class IngredientController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'succes',
+                'success',
                 'Votre ingrédient à été ajouté avec succès !'
             );
 
@@ -116,7 +116,7 @@ class IngredientController extends AbstractController
                 $manager->flush();
 
                 $this->addFlash(
-                    'modif',
+                    'success',
                     'Votre ingrédient à été modifié avec succès !'
                 );
                 #On envoie le flashMessage dans le ingredient.index
