@@ -35,7 +35,8 @@ class RecipeController extends AbstractController
     ): Response
     {
         $recipes = $paginator->paginate(
-            $repository->findAll(),  /* query NOT result */
+        #FindBy pour afficher uniquement les recette lié a l'utilisateur connecté
+        $repository->findBy(['user'=>$this->getUser()]),
             $request->query->getInt('page', 1), /*page number*/
             10 ); /*limit per page*/
 
@@ -62,7 +63,8 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $recipe = $form->getData();
-
+            #Ici lors de la création d'une recette on lui injecte le User qui la créer
+            $recipe->setUser($this->getUser());
             #Envoie en base (commit)
             $manager->persist($recipe);
             #Enregistrement en base de données(push)

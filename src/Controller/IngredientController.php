@@ -40,7 +40,8 @@ class IngredientController extends AbstractController
 
         /* Ici on paramètre notre pagination avec les query et du nombre de query par pages (ici 10 par page)*/
         $ingredients = $paginator->paginate(
-            $repository->findAll(),  /* query NOT result */
+            #FindBy pour afficher uniquement les ingrédients lié a l'utilisateur connecté
+            $repository->findBy(['user' => $this->getUser()]),  /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             10 ); /*limit per page*/
 
@@ -71,6 +72,8 @@ class IngredientController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $ingredient = $form->getData();
+            #Ici lors de la création d'un ingrédient on lui injecte le User qui la créer
+            $ingredient->setUser($this->getUser());
             #Envoie en base (commit)
             $manager->persist($ingredient);
             #Enregistrement en base de données(push)

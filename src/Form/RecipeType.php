@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Recipe;
 use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -142,7 +143,10 @@ class RecipeType extends AbstractType
             ->add('ingredients', EntityType::class, [
                 'class' => Ingredient::class,
                 'query_builder' => function (IngredientRepository $r) {
+                #ici on récupère uniquement les ingrédient créer par l'utilisateur connécter
                     return $r->createQueryBuilder('i')
+                        ->where('i.user = :user')
+                        ->setParameter('user', $this->token->getToken()->getUser())
                         ->orderBy('i.name', 'ASC');
                 },
                 'label' => 'Les ingrédients',
@@ -157,7 +161,7 @@ class RecipeType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Modifier ma recette'
+                'label' => 'Créer ma recette'
             ]);
     }
 
