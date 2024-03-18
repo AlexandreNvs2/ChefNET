@@ -13,6 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class UserController extends AbstractController
 {
     /**
@@ -78,15 +79,24 @@ class UserController extends AbstractController
     #[Route('/utilisateur/edition-mot-de-passe/{id}' , 'user.edit.password', methods: ['GET','POST'])]
     public function editPassword(User $user, Request $reqest, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager) : Response
     {
+        #Vérification de la connexion de l'utilisateur
+        if (!$this->getUser()){
+            return $this->redirectToRoute('security.login');
+        }
+        #Vérification que ce soit le bon compte qui essaie de modifier le profil !
+        if ($this->getUser() !== $user){
+            return $this->redirectToRoute('recipe.index');
+        }
+
         $form = $this->createForm(UserPasswordType::class);
 
         $form->handleRequest($reqest);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
-                $user->setPassword(
-                    $hasher->hashPassword($user,
-                        $form->getData()['newPassword'])
-
+                $user->setUpdatedAt(new \DateTimeImmutable());
+                $user->setPlainPassword
+                (
+                        $form->getData()['newPassword']
                 );
 
 
