@@ -105,7 +105,7 @@ class RecipeController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'modify',
+                'success',
                 'Votre recette à été modifié avec succès !'
             );
             #On envoie le flashMessage dans le ingredient.index
@@ -131,7 +131,7 @@ class RecipeController extends AbstractController
         $manager->flush();
 
         $this->addFlash(
-            'modif',
+            'success',
             'Votre ingrédient à été supprimé avec succès !'
         );
 

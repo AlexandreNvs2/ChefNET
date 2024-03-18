@@ -145,7 +145,7 @@ class IngredientController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'modif',
+                'success',
                 'Votre ingrédient à été supprimé avec succès !'
             );
 
