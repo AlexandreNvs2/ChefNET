@@ -5,14 +5,17 @@ namespace App\Controller;
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use App\Repository\IngredientRepository;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
-
-
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
+
+
 
 /**
  * @Route("/chemin", name="nom_route")
@@ -30,7 +33,10 @@ class IngredientController extends AbstractController
      * @param Request $request
      * @return Response
      */
+
     #[Route('/ingredient', name: 'ingredient.index' , methods: ['GET'])]
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
+    #[isGranted('ROLE_USER')]
     public function index(IngredientRepository $repository
         , PaginatorInterface $paginator
         , Request $request
@@ -59,6 +65,8 @@ class IngredientController extends AbstractController
      * @return Response
      */
     #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'] )]
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
+    #[isGranted('ROLE_USER')]
     public function new(
         Request $request,
         EntityManagerInterface $manager #Entity manager qui va nous permettre de push notre ingrédient en base de données  #
@@ -105,7 +113,13 @@ class IngredientController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-#[Route('/ingredient/edition/{id}','ingredient.edit', methods: ['GET', 'POST'])]
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
+        subject: 'ingredient',
+    )]
+    #Ici en plus de restreindre a un compte connecté il faut aussi que l'ingrédient soit lié au user
+
+    #[Route('/ingredient/edition/{id}','ingredient.edit', methods: ['GET', 'POST'])]
     public function edit(Ingredient $ingredient , Request $request, EntityManagerInterface $manager) : Response
         {
 

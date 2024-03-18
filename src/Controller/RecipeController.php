@@ -8,14 +8,14 @@ use App\Repository\IngredientRepository;
 use App\Repository\RecipeRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use Doctrine\ORM\EntityManagerInterface;
-
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 class RecipeController extends AbstractController
@@ -28,6 +28,8 @@ class RecipeController extends AbstractController
      * @param Response $request
      * @return Response
      */
+    #[isGranted('ROLE_USER')]
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
     #[Route('/recette', name: 'recipe.index',methods: ['GET'])]
     public function index(PaginatorInterface $paginator
         ,RecipeRepository $repository
@@ -53,7 +55,9 @@ class RecipeController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-#[Route('/recette/creation', 'recipe.new', methods: ['GET' , 'POST'])]
+    #[isGranted('ROLE_USER')]
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
+    #[Route('/recette/creation', 'recipe.new', methods: ['GET' , 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
 
@@ -91,6 +95,11 @@ class RecipeController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
+        subject: 'recipe',
+    )]
+    #Ici en plus de restreindre a un comptr connecté il faut aussi que la recette soit lié au user
     #[Route('/recette/edition/{id}','recipe.edit', methods: ['GET', 'POST'])]
     public function edit(Recipe $recipe , Request $request, EntityManagerInterface $manager) : Response
     {
