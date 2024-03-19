@@ -1,16 +1,14 @@
 {% extends "base.html.twig" %}
 
-{% block title %}SymRecipe - Nouvelle recette
-{% endblock %}
-
+{% block title %}  SymRecipe - Nouvelle recette {% endblock %}
 {% block body %}
-    <div class="container">
 
-        <h1 class="mt-4">Création d'une recette</h1>
+    <div class="container">
+        <h1 class="mt-4"> Créaction d'une recette </h1>
 
         {{ form_start(form) }}
 
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.name) }}
             {{ form_widget(form.name) }}
             <div class="form-error">
@@ -18,7 +16,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.time) }}
             {{ form_widget(form.time) }}
             <div class="form-error">
@@ -26,7 +24,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.nbPeople) }}
             {{ form_widget(form.nbPeople) }}
             <div class="form-error">
@@ -34,15 +32,14 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.difficulty) }}
             {{ form_widget(form.difficulty) }}
             <div class="form-error">
                 {{ form_errors(form.difficulty) }}
             </div>
         </div>
-
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.description) }}
             {{ form_widget(form.description) }}
             <div class="form-error">
@@ -50,7 +47,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class=" form-group">
             {{ form_label(form.price) }}
             {{ form_widget(form.price) }}
             <div class="form-error">
@@ -58,27 +55,18 @@
             </div>
         </div>
 
-        <div class="form-group mt-4">
-            {{ form_widget(form.isFavorite) }}
+        <div class=" form-group">
             {{ form_label(form.isFavorite) }}
+            {{ form_widget(form.isFavorite) }}
             <div class="form-error">
                 {{ form_errors(form.isFavorite) }}
             </div>
         </div>
 
-        {{ form_row(form.imageFile) }}
+        {{ form_row(form.ingredients) }}
 
-        {{ form_label(form.ingredients) }}
-        <br>
-        <div id="ingredients-wrapper">
-            {% for field in form.ingredients %}
-                <div style="min-width: 10%;">
-                    {{ form_widget(field) }}
-                    {{ form_label(field) }}
-                </div>
-            {% endfor %}
-        </div>
 
         {{ form_end(form) }}
+
     </div>
 {% endblock %}

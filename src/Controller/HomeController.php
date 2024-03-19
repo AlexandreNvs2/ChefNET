@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Recipe;
-use App\Repository\RecipeRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,10 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/','home.index', methods : ['GET'])]
-  public function index(RecipeRepository $recipeRepository) : Response
+  public function index() : Response
   {
-       return $this->render('pages/home.html.twig',[
-           'recipes' => $recipeRepository->findPublicRecipe(3)]
-          );
+       return $this->render('pages/home.html.twig');
     }
 }

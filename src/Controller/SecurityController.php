@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
-    #[Route('/connexion', name: 'security.login', methods: ['POST', 'GET'])]
+    #[Route('/connexion', name: 'security.login',methods: ['POST' , 'GET'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         #Au lieu d'instancier nos variable ici on les instancie dans le return
@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
      * Ce controller nous permet de nous déconnecter
      * @return void
      */
-    #[Route('/deconnexion', 'security.logout')]
+    #[Route('/deconnexion','security.logout')]
     public function logout()
     {
         //D'après la doc symfony s'occupe du reste
@@ -47,13 +47,13 @@ class SecurityController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/inscription', 'security.registration', methods: ['POST', 'GET'])]
-    public function registration(Request $request, EntityManagerInterface $manager): Response
+    #[Route('/inscription','security.registration', methods: ['POST' , 'GET'])]
+    public function registration(Request $request, EntityManagerInterface $manager) : Response
     {
         #Création du form avec User en paramètre
         $user = new User();
         $user->setRoles(['ROLE_USER']);
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(RegistrationType::class,$user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,11 +69,11 @@ class SecurityController extends AbstractController
                 'Votre compte a été créer avec succès !'
             );
 
-            return $this->redirectToRoute('security.login');
+           return $this->redirectToRoute('security.login');
         }
 
 
-        return $this->render('pages/security/registration.html.twig', [
+        return $this->render('pages/security/registration.html.twig' , [
             'form' => $form->createView()
         ]);
     }
