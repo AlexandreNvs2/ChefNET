@@ -99,7 +99,7 @@ class RecipeController extends AbstractController
         new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
         subject: 'recipe',
     )]
-    #Ici en plus de restreindre a un comptr connecté il faut aussi que la recette soit lié au user
+    #Ici en plus de restreindre a un compte connecté il faut aussi que la recette soit lié au user
     #[Route('/recette/edition/{id}','recipe.edit', methods: ['GET', 'POST'])]
     public function edit(Recipe $recipe , Request $request, EntityManagerInterface $manager) : Response
     {
