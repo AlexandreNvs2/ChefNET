@@ -90,7 +90,7 @@ class RecipeController extends AbstractController
     #[isGranted('ROLE_USER')]
     public function new(Request $request, EntityManagerInterface $manager  ): Response
     {
-
+        #On instencie un objet de recipe
         $recipe = new Recipe();
         $form = $this->createForm(RecipeType::class, $recipe);
 
