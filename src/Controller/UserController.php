@@ -7,11 +7,13 @@ use App\Form\UserPasswordType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 class UserController extends AbstractController
@@ -23,17 +25,14 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user.getId() === subject.getId()'),
+        subject: 'user',
+    )]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit' , methods: ['GET' , 'POST'])]
     public function edit(User $user, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
-        #Vérification de la connexion de l'utilisateur
-        if (!$this->getUser()){
-            return $this->redirectToRoute('security.login');
-        }
-        #Vérification que ce soit le bon compte qui essaie de modifier le profil !
-        if ($this->getUser() !== $user){
-           return $this->redirectToRoute('recipe.index');
-        }
+
 
         $form = $this->createForm(UserType::class, $user);
 
@@ -76,6 +75,10 @@ class UserController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user.getId() === subject.getId()'),
+        subject: 'user',
+    )]
     #[Route('/utilisateur/edition-mot-de-passe/{id}' , 'user.edit.password', methods: ['GET','POST'])]
     public function editPassword(User $user, Request $reqest, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager) : Response
     {
