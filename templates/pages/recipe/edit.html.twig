@@ -6,7 +6,7 @@
         <h1 class="mt-4"> Modificaton de la recette </h1>
 
     {# Flash message pour l'ajout avec succès #}
-    {% for message in app.flashes ('modify') %}
+    {% for message in app.flashes ('success') %}
         <div class=" alert alert-success">
             {{ message }}
         </div>

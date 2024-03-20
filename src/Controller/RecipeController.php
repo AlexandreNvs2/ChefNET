@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Ingredient;
 use App\Form\IngredientType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 
 
@@ -28,6 +30,9 @@ class RecipeController extends AbstractController
      * @param Response $request
      * @return Response
      */
+
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
+    #[isGranted('ROLE_USER')]
     #[Route('/recette', name: 'recipe.index',methods: ['GET'])]
     public function index(PaginatorInterface $paginator
         ,RecipeRepository $repository
@@ -53,7 +58,10 @@ class RecipeController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-#[Route('/recette/creation', 'recipe.new', methods: ['GET' , 'POST'])]
+
+    #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
+    #[isGranted('ROLE_USER')]
+    #[Route('/recette/creation', 'recipe.new', methods: ['GET' , 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
 
@@ -91,6 +99,12 @@ class RecipeController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
+
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
+        subject: 'recipe',
+    )]
+    #Ici en plus de restreindre a un comptr connecté il faut aussi que la recette soit lié au user
     #[Route('/recette/edition/{id}','recipe.edit', methods: ['GET', 'POST'])]
     public function edit(Recipe $recipe , Request $request, EntityManagerInterface $manager) : Response
     {
@@ -105,7 +119,7 @@ class RecipeController extends AbstractController
             $manager->flush();
 
             $this->addFlash(
-                'modify',
+                'success',
                 'Votre recette à été modifié avec succès !'
             );
             #On envoie le flashMessage dans le ingredient.index
@@ -131,10 +145,35 @@ class RecipeController extends AbstractController
         $manager->flush();
 
         $this->addFlash(
-            'modif',
-            'Votre ingrédient à été supprimé avec succès !'
+            'success',
+            'Votre recette à été supprimé avec succès !'
         );
 
         return $this->redirectToRoute('recipe.index');
     }
+    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    public function indexpublic(PaginatorInterface $paginator, RecipeRepository $repository, Request $request): Response
+    {
+        $recipes = $paginator->paginate(
+            $repository->findPublicRecipe(null),
+            $request->query->getInt('page', 1), /*page number*/
+            10
+        );
+        return $this->render('pages/recipe/index_public.html.twig', [
+            'recipes' => $recipes
+        ]);
+    }
+    #[IsGranted(
+        attribute: new Expression('is_granted("ROLE_USER") and  subject.isIsPublic() === true'),
+        subject: 'recipe',
+    )]
+    #IsGranted nous permet de restraindre uniquement au personne connecté et au recette publique
+    #[Route('/recette/{id}','recipe.show',methods :['GET','POST'])]
+    public function show(Recipe $recipe) : Response
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe' => $recipe
+        ]);
+    }
+
 }

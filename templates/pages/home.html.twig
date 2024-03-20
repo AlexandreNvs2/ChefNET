@@ -13,6 +13,22 @@
             <p>Pour commencer rendez-vous sur la page d'inscription</p>
             <a class="btn btn-primary btn-lg" href="#" role="button">INSCRIPTION</a>
         </div>
+        <div class="recipes">
+            <h2 class="mt-4">Recettes de la communauté</h2>
+            <div class="d-flex justify-content-between">
+                {% for recipe in recipes %}
+                    <div class="card border-primary mb-3" style="max-width: 20rem;">
+                        <div class="card-header">Recette n°{{ recipe.id }}</div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{{ path('recipe.show', {id: recipe.id}) }}">{{ recipe.name }}</a>
+                            </h4>
+                            <p class="card-text">{{ recipe.description|slice(0, 100) ~ '...' }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
 
