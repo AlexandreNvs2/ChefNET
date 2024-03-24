@@ -5,25 +5,25 @@
 
 {% block body %}
     <div class="container mt-4">
-        {% if not recipes.items is same as ([]) %}
-            <h1>Mes recettes </h1>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
 
+        {% if not recipes.items is same as([]) %}
+            <h1>Mes recettes</h1>
 
-            <a href="{{ path('recipe.new') }}" class="btn btn-primary mt-4">
+            <a href="{{ path('recipe.new') }}" class="btn btn-primary">
                 Créer une recette
             </a>
 
-            {# Flash message pour l'ajout avec succès #}
-            {% for message in app.flashes ('success') %}
-                <div class="alert alert-success mt-4">
-                    {{ message }}
-                </div>
-            {% endfor %}
+            <div class="count mt-4">Il y a
+                {{ recipes.getTotalItemCount }}
+                recette(s)
+            </div>
 
-            {#Ici on compte le nombre d'item et on l'affiche, et on gère un array vide avec un if not#}
-            <h5 class="mt-4"> Il y a {{ recipes.getTotalItemCount }} recettes !</h5>
-
-            <table class="table table-hover mt-4">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Numéro</th>
@@ -32,41 +32,50 @@
                     <th scope="col">Difficulté</th>
                     <th scope="col">Date de création</th>
                     <th scope="col">Edition</th>
-                    <th scope="col">Suppression</th>
+                    <th scope="col">Suppresion</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for recipe in recipes %} {# boucle for pour afficher les ingredients dans le table #}
-                    <tr class="table-primary mt-4">
+                {% for recipe in recipes %}
+                    <tr class="table-primary">
                         <th scope="row">{{ recipe.id }}</th>
                         <td>{{ recipe.name }}</td>
-                        <td>{{ (recipe.price is null) ? 'Non renseigné' : recipe.price }}</td>
-                        <td>{{ (recipe.difficulty is null) ? 'Non renseigné' : recipe.difficulty }}</td>
+                        <td>
+                            {% if recipe.price is null %}
+                                Non renseigné
+                            {% else %}
+                                {{ recipe.price|number_format(2, '.', ',') }}
+                                €
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if recipe.difficulty is null %}
+                                Non renseigné
+                            {% else %}
+                                {{ recipe.difficulty }}
+                            {% endif %}
+                        </td>
                         <td>{{ recipe.createdAt|date('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ path('recipe.edit', {id: recipe.id }) }}" class="btn btn-info">
-                                Modifier
-                            </a>
+                            <a href="{{ path('recipe.edit', { id: recipe.id }) }}" class="btn btn-info">Modifier</a>
                         </td>
                         <td>
-                            <a href="{{ path('recipe.delete', {id: recipe.id }) }}" class="btn btn-warning">
-                                Supprimer
-                            </a>
+                            <a href="{{ path('recipe.delete', { id: recipe.id }) }}" class="btn btn-warning">Supprimer</a>
                         </td>
-
                     </tr>
                 {% endfor %}
-
                 </tbody>
             </table>
-            {# Ici on appel la méthode de pagination  #}
+
             <div class="navigation d-flex justify-content-center mt-4">
                 {{ knp_pagination_render(recipes) }}
             </div>
-            {# Else plus Fin du if #}
         {% else %}
-            <h4> Il n'y a pas de recette </h4>
+            <h4>Il n'y a pas de recettes</h4>
+
+            <a href="{{ path('recipe.new') }}" class="btn btn-primary">
+                Créer une recette
+            </a>
         {% endif %}
     </div>
-
 {% endblock %}

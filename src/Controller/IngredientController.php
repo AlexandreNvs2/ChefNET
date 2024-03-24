@@ -64,7 +64,7 @@ class IngredientController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'] )]
+    #[Route('/ingredient/creation', 'ingredient.new', methods: ['GET', 'POST'] )]
     #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
     #[isGranted('ROLE_USER')]
     public function new(
@@ -153,6 +153,10 @@ class IngredientController extends AbstractController
      * @return Response
      */
         #[Route('/ingredient/delete/{id}', 'ingredient.delete', methods: ['GET'])]
+        #[IsGranted(
+            new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
+            subject: 'ingredient',
+        )]
         public function delete(EntityManagerInterface $manager, Ingredient $ingredient) : Response
         {
             $manager->remove($ingredient);

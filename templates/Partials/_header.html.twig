@@ -11,6 +11,10 @@
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('recipe.index.public') }}">Recette de la communauté
+                    </a>
+                </li>
                 {#app.user nous es donné via twig et il nous permet de vérifier si un utilisateur est connecter#}
                 {% if app.user %}
                     <li class="nav-item">

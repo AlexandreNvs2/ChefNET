@@ -64,7 +64,7 @@ class RecipeController extends AbstractController
 
     #isGranted nous permet de restreindre la Route au user avec comme role 'ROLE_USER'
     #[isGranted('ROLE_USER')]
-    #[Route('/recette/creation', 'recipe.new', methods: ['GET' , 'POST'])]
+    #[Route('/recette/creation', 'recipe.new', methods: ['GET','POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response
     {
 
@@ -142,6 +142,10 @@ class RecipeController extends AbstractController
      * @return Response
      */
     #[Route('/recette/delete/{id}', 'recipe.delete', methods: ['GET'])]
+    #[IsGranted(
+        new Expression('is_granted("ROLE_USER") and user === subject.getUser()'),
+        subject: 'recipe',
+    )]
     public function delete(EntityManagerInterface $manager, Recipe $recipe) : Response
     {
         $manager->remove($recipe);
@@ -166,8 +170,18 @@ class RecipeController extends AbstractController
             'recipes' => $recipes
         ]);
     }
+
+
+    /**
+     * Ce controller nous permet d'afficher dans une page une recette avec différentes informations dont sa note
+     * @param Recipe $recipe
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param MarkRepository $markRepository
+     * @return Response
+     */
     #[IsGranted(
-        attribute: new Expression('is_granted("ROLE_USER") and  subject.isIsPublic() === true'),
+        attribute: new Expression('is_granted("ROLE_USER") and  subject.isIsPublic() === true or user === subject.getUser()'),
         subject: 'recipe',
     )]
     #IsGranted nous permet de restraindre uniquement au personne connecté et au recette publique

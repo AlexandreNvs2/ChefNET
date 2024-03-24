@@ -16,7 +16,12 @@
 
         <h1 class="mt-4">{{ recipe.name }}</h1>
 
-        <p>L'avis moyen de cette recette est de {{ recipe.average|number_format(2, '.', ',') }}/5 !</p>
+        {% if recipe.getAverage() is not null %}
+            <p>L'avis moyen de cette recette est de {{ recipe.getAverage()|number_format(2, '.', ',') }} sur 5 !</p>
+        {% else %}
+            <p>Cette recette n'a pas encore été noté. N'hésite pas à donné ta note !</p>
+        {% endif %}
+
         <div>
 			<span class="badge bg-primary">Créée le
 				{{ recipe.createdAt|date('d/m/Y') }}</span>
@@ -62,6 +67,11 @@
         <div class="mt-4">
             {{ recipe.description|raw }}
         </div>
+
+        <div class="recipe__image">
+            <img style="max-width: 100%" src="{{ vich_uploader_asset(recipe, 'imageFile') }}">
+        </div>
+
 
         <div class="mt-4">
             <p class="mt-4">Ingrédients</p>
