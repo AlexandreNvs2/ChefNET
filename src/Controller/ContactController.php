@@ -51,7 +51,7 @@ class ContactController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Votre demande à été envoyé avec succès!'
+                'Votre demande à été envoyé avec succès !'
             );
 
 
