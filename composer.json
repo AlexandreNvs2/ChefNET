@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
+        "easycorp/easyadmin-bundle": "^4.9",
         "karser/karser-recaptcha3-bundle": "^0.1.26",
         "knplabs/knp-paginator-bundle": "^6.3",
         "phpdocumentor/reflection-docblock": "^5.3",

@@ -26,9 +26,22 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        //User
+        //User et ADMIN
 
         $users = [];
+
+
+        $admin = new User();
+        $admin->setFullName('admin')
+            ->setPseudo(null)
+            ->SetEmail('admin@chefNET.fr')
+            ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+            ->setPlainPassword('password');
+
+        $users[] = $admin;
+        $manager->persist($admin);
+
+
         for ($l = 0; $l < 10; $l++) {
             $user = new User();
             $user->setFullName($this->faker->name())
