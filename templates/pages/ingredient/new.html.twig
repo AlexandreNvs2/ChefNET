@@ -1,39 +1,40 @@
 {% extends "base.html.twig" %}
-{% block title %}  SymRecipe - Nouvelle Ingrédient {% endblock %}
+
+{% block title %}SymRecipe - Nouveau ingrédient
+{% endblock %}
 
 {% block body %}
-
     <div class="container">
-        <h1 class="mt-4"> Créaction d'un ingrédient </h1>
-    </div>
-    {# Flash message pour l'ajout avec succès #}
-    {% for message in app.flashes ('success') %}
-        <div class=" alert alert-success">
-            {{ message }}
+
+        <h1 class="mt-4">Création d'un ingrédient</h1>
+
+        <form name="ingredient" method="post">
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+            <div class="form-error">
+                {{ form_errors(form.name) }}
+            </div>
         </div>
-    {% endfor %}
+
+        <div class="form-group">
+            {{ form_label(form.price) }}
+            {{ form_widget(form.price) }}
+            <div class="form-error">
+                {{ form_errors(form.price) }}
+            </div>
+        </div>
+
+
+
+
+        <button type="submit" id="ingredient_submit" name="ingredient[submit]" class="btn btn-primary mt-4">Créer mon ingrédient</button>
+
+
+
+
+    </form>
+
     </div>
 
-    {{ form_start(form) }}
-
-    <div class=" form-group">
-        {{ form_label(form.name) }}
-        {{ form_widget(form.name) }}
-        <div class="form-error">
-            {{ form_errors(form.name) }}
-        </div>
-    </div>
-    <div class=" form-group">
-        {{ form_label(form.price) }}
-        {{ form_widget(form.price) }}
-        <div class="form-error">
-            {{ form_errors(form.price) }}
-        </div>
-    </div>
-    <div class="form-group">
-        {{ form_row(form.submit) }}
-    </div>
-
-    </div>
-    {{ form_end(form) }}
 {% endblock %}
