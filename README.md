@@ -8,3 +8,8 @@ Création d'une recette
 ![Capture d’écran 2024-05-29 à 01 02 28](https://github.com/user-attachments/assets/47d2efa2-cae4-4f52-9982-1b74a76f0b1a)
 Modification du mot de passe avec mailing
 ![Capture d’écran 2024-05-29 à 01 05 10](https://github.com/user-attachments/assets/7baf8976-82bc-4594-a774-455735de7fda)
+Formulaire de contact
+<img width="1416" alt="Capture d’écran 2024-05-29 à 08 56 30" src="https://github.com/user-attachments/assets/37d9a77c-b49a-46e5-a5f0-bb6fb209b2b0" />
+Classe
+<img width="1055" alt="Capture d’écran 2024-04-12 à 11 03 49" src="https://github.com/user-attachments/assets/1b3630c5-319d-4058-bf5e-5e58b9311c82" />
+
