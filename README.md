@@ -12,4 +12,7 @@ Formulaire de contact
 <img width="1416" alt="Capture d’écran 2024-05-29 à 08 56 30" src="https://github.com/user-attachments/assets/37d9a77c-b49a-46e5-a5f0-bb6fb209b2b0" />
 Classe
 <img width="1055" alt="Capture d’écran 2024-04-12 à 11 03 49" src="https://github.com/user-attachments/assets/1b3630c5-319d-4058-bf5e-5e58b9311c82" />
+Admin et gestion des crud 
+![image](https://github.com/user-attachments/assets/014548cf-d8bf-4b6e-85c1-bb825a908e35)
+
 
